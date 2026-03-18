@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap');
+
+:root {
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.t-logo {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.t-label {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+
+.t-shift {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 5vw, 28px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.72;
+  color: var(--text-primary);
+}
+
+.t-small {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.t-micro {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+.t-prompt {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-dimmer);
+  line-height: 1.5;
+}
+
+/* Return mode — larger, more space */
+.return-mode .t-shift {
+  font-size: clamp(26px, 6vw, 34px);
+}
+.return-mode .t-body {
+  font-size: 17px;
+  line-height: 1.8;
+}
