@@ -1,8 +1,3 @@
-type RecognitionResultLike = {
-  transcript: string
-  confidence?: number
-}
-
 type RecognitionAlternativeLike = {
   transcript: string
   confidence?: number
@@ -73,17 +68,17 @@ function humanizeError(code?: string): string {
   switch (code) {
     case 'not-allowed':
     case 'service-not-allowed':
-      return 'Microphone access is blocked. Try again or type instead.'
+      return 'Microphone access isn’t available right now. You can try again, or use text instead.'
     case 'no-speech':
-      return 'I did not catch anything. Try again or type instead.'
+      return 'I didn’t catch a clear phrase. Try one short sentence, or use text instead.'
     case 'audio-capture':
       return 'No microphone input was detected.'
     case 'network':
-      return 'Speech capture had a network problem. Try again.'
+      return 'Voice capture had a network problem. Try again.'
     case 'aborted':
       return 'Listening stopped.'
     default:
-      return 'Voice capture did not complete. Try again or type instead.'
+      return 'Voice capture didn’t complete. Try again or use text instead.'
   }
 }
 
@@ -99,7 +94,7 @@ export function createSpeechSession(
 
   if (!SpeechCtor) {
     return {
-      start: () => callbacks.onError?.('Voice capture is not available here. Type instead.'),
+      start: () => callbacks.onError?.('Voice capture isn’t supported here. Try Safari, or use text instead.'),
       stop: () => {},
       abort: () => {},
     }
