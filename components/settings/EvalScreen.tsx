@@ -85,7 +85,7 @@ export default function EvalScreen() {
             style={{ marginTop: '8px' }}>
             Test input
           </button>
-          {singleResult && (
+          {singleResult !== null && (
             <pre className={styles.pre}>{JSON.stringify(singleResult, null, 2)}</pre>
           )}
         </section>
