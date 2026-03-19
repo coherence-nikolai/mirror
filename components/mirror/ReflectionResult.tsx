@@ -66,8 +66,19 @@ ${state.shiftPhrase}` : '',
     past: 't-past', present: 't-present', future: 't-future', mixed: 't-mixed',
   }
 
+  const sourceLabel: Record<string, string> = {
+    deterministic: 'Local',
+    ai: 'AI',
+    hybrid: 'Hybrid',
+    repaired: 'Repaired',
+  }
+
   return (
     <div className={styles.result}>
+      <div className="t-label" style={{ marginBottom: '12px', display: 'block' }}>
+        Reflection
+      </div>
+
       <div className={styles.metaRow}>
         <span className={`mtag pattern`}>{state.primaryPattern}</span>
         {state.secondaryPattern && <span className="mtag">{state.secondaryPattern}</span>}
@@ -76,7 +87,7 @@ ${state.shiftPhrase}` : '',
         <div className="ibar">
           <div className="ifill" style={{ width: `${Math.round(state.intensity * 100)}%` }} />
         </div>
-        <span className="mtag source">{state.source}</span>
+        <span className="mtag source">{sourceLabel[state.source] ?? state.source}</span>
       </div>
 
       <div className={`${styles.block} ${styles.seenBlock} emerge-1`}>
