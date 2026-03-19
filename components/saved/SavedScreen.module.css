@@ -11,17 +11,17 @@
   margin-bottom: -1px;
   color: var(--text-dimmer);
   font-family: var(--font-sans);
-  font-size: 10px;
-  letter-spacing: 0.26em;
+  font-size: 11px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  padding: 8px 16px 10px;
+  padding: 10px 16px 12px;
   cursor: pointer;
   transition: color var(--t-micro), border-color var(--t-micro);
 }
 
 .tabBtn.active {
   color: var(--accent);
-  border-bottom-color: rgba(200,185,138,0.45);
+  border-bottom-color: rgba(200,185,138,0.65);
 }
 
 .panel { padding-bottom: var(--sp-16); }
@@ -37,7 +37,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: var(--sp-4);
-  padding: 14px 0;
+  padding: 16px 0;
   border-bottom: 1px solid var(--border-dim);
 }
 
@@ -48,7 +48,7 @@
 .removeBtn {
   background: none;
   border: none;
-  color: var(--text-faint);
+  color: var(--text-dimmer);
   font-size: 18px;
   cursor: pointer;
   padding: 0 4px;
@@ -66,16 +66,16 @@
 }
 
 .patternCard {
-  background: var(--bg-surface);
+  background: var(--bg-raised);
   border: 1px solid var(--border-dim);
   border-radius: var(--r-sm);
   padding: 14px 16px;
 }
 
-.patternName { color: var(--accent); opacity: 0.70; margin-bottom: 5px; }
+.patternName { color: var(--accent); opacity: 0.88; margin-bottom: 5px; }
 
 .patternCount {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 300;
   color: var(--text-primary);
   font-family: var(--font-sans);
@@ -90,7 +90,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: var(--sp-4);
-  padding: 12px 0;
+  padding: 14px 0;
   border-bottom: 1px solid var(--border-dim);
 }
 
