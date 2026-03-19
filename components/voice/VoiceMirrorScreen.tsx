@@ -30,6 +30,13 @@ function retryToTone(direction?: 'softer' | 'direct' | null): ToneStyle | undefi
   return preferred === 'clean' ? undefined : preferred
 }
 
+function withRawInput(state: MirrorState, rawInput: string): MirrorState {
+  return {
+    ...state,
+    rawInput,
+  }
+}
+
 export default function VoiceMirrorScreen() {
   const router = useRouter()
   const [prefs, setPrefs] = useState<MirrorPrefs>(DEFAULT_PREFS)
@@ -111,7 +118,7 @@ export default function VoiceMirrorScreen() {
     try {
       if (prefs.localOnly) {
         const localState = reflectLocal({ rawInput: trimmed, tonePreference })
-        finalizeState(localState)
+        finalizeState(withRawInput(localState, trimmed))
         return
       }
 
@@ -130,9 +137,9 @@ export default function VoiceMirrorScreen() {
         | { ok: false; error: string; fallback?: MirrorState }
 
       if (data.ok) {
-        finalizeState(data.state)
+        finalizeState(withRawInput(data.state, trimmed))
       } else if (data.fallback) {
-        finalizeState(data.fallback)
+        finalizeState(withRawInput(data.fallback, trimmed))
         setError('Reflection is from local engine — ' + data.error)
       } else {
         setError(data.error)
@@ -140,7 +147,7 @@ export default function VoiceMirrorScreen() {
     } catch {
       if (prefs.localOnly || !prefs.useAI) {
         const localState = reflectLocal({ rawInput: trimmed, tonePreference })
-        finalizeState(localState)
+        finalizeState(withRawInput(localState, trimmed))
       } else {
         setError('Network error — please try again.')
       }
