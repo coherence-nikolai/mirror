@@ -14,22 +14,13 @@
   gap: var(--sp-6);
 }
 
-.transcriptCard {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-dim);
-  border-radius: var(--r-sm);
-  padding: 16px 18px;
+.heardInline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 2px;
 }
 
-.transcriptLabel {
-  margin-bottom: 8px;
-}
-
-.transcriptText {
-  white-space: pre-wrap;
-}
-
-.transcriptMeta {
-  margin-top: 10px;
-  color: var(--text-dimmer);
+.heardText {
+  color: var(--text-dim);
 }
