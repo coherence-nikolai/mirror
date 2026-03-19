@@ -51,10 +51,11 @@
   bottom: -26px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 10.5px;
-  letter-spacing: 0.24em;
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--text-primary);
+  opacity: 1;
   white-space: nowrap;
   font-family: var(--font-sans);
   font-weight: 300;
