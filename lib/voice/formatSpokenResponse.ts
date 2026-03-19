@@ -84,13 +84,13 @@ function shortenLine(text: string, maxWords = 12): string {
 function pickSeenLine(state: MirrorState): string {
   const candidate = (state.seen ?? '').trim()
   if (candidate && !VAGUE_VALUES.has(candidate.toLowerCase())) {
-    return shortenLine(candidate, 10)
+    return shortenLine(candidate, 8)
   }
 
   const named = extractNamedEmotion(state.rawInput ?? '')
   if (named) return named
 
-  return 'Something difficult is here.'
+  return 'Something is here.'
 }
 
 function pickShiftLine(state: MirrorState): string {
@@ -135,15 +135,15 @@ export function formatSpokenResponse(
         shiftLine = 'You do not need to force a name yet.'
         paceLine = 'Stay with one breath.'
       } else if (bucket === 'unsettled') {
-        seenLine = 'Something feels unsettled.'
+        seenLine = 'This feels off.'
         shiftLine = 'Stay close to what is here before naming it.'
         paceLine = 'One slower breath.'
       } else if (bucket === 'strain') {
-        seenLine = 'Something is straining the system.'
+        seenLine = 'This feels like too much.'
         shiftLine = 'Make the next moment smaller.'
         paceLine = 'Slow the exhale.'
       } else {
-        seenLine = 'Something is asking for attention.'
+        seenLine = 'Something wants attention.'
         shiftLine = 'Stay with what is here before reaching outward.'
         paceLine = 'One breath.'
       }
