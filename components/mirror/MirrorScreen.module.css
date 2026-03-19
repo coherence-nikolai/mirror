@@ -21,13 +21,13 @@
   width: 100%;
   min-height: 120px;
   background: var(--bg-surface);
-  border: 1px solid var(--border-dim);
+  border: 1px solid var(--border-mid);
   border-radius: var(--r-sm);
   color: var(--text-primary);
   font-family: var(--font-serif);
-  font-size: 18px;
+  font-size: clamp(28px, 5.8vw, 34px);
   font-weight: 300;
-  line-height: 1.72;
+  line-height: 1.45;
   padding: 18px 20px;
   resize: none;
   outline: none;
@@ -36,7 +36,7 @@
 }
 
 .textarea::placeholder {
-  color: var(--text-dimmer);
+  color: var(--text-dim);
   font-style: italic;
 }
 
@@ -55,19 +55,21 @@
 .promptHint {
   background: none;
   border: none;
-  color: var(--text-dimmer);
+  color: var(--text-dim);
   cursor: pointer;
-  font-size: 15px;
+  font-size: 16px;
   padding: 4px 6px;
   transition: color var(--t-micro);
   line-height: 1;
 }
-.promptHint:hover { color: var(--text-dimmer); }
+.promptHint:hover { color: var(--text-dim); }
 
 .charCount {
   flex: 1;
   text-align: right;
   margin-right: var(--sp-2);
+  color: var(--text-dim);
+  font-size: 14px;
 }
 
 .loadingRow {
