@@ -16,6 +16,9 @@ import { createSpeechSession, isSpeechRecognitionSupported, type SpeechSessionCo
 import { formatSpokenResponse } from '@/lib/voice/formatSpokenResponse'
 import type { VoiceSpokenResponse } from '@/lib/voice/formatSpokenResponse'
 import { isSpeechSynthesisSupported, speakText, stopSpeaking } from '@/lib/voice/speechOutput'
+import { evaluateTranscript, humanizeTranscriptRetryReason } from '@/lib/voice/evaluateTranscript'
+import { resolveVoiceOutcome } from '@/lib/voice/resolveVoiceOutcome'
+import type { VoiceOutcome } from '@/lib/voice/resolveVoiceOutcome'
 import VoiceCapturePanel from './VoiceCapturePanel'
 import VoiceResponsePlayer from './VoiceResponsePlayer'
 import styles from './VoiceMirrorScreen.module.css'
@@ -53,10 +56,15 @@ export default function VoiceMirrorScreen() {
     setSpeechSupported(isSpeechSynthesisSupported())
   }, [])
 
+  const voiceOutcome: VoiceOutcome | null = useMemo(() => {
+    if (!state) return null
+    return resolveVoiceOutcome(state)
+  }, [state])
+
   const voiceResponse: VoiceSpokenResponse | null = useMemo(() => {
     if (!state) return null
-    return formatSpokenResponse(state)
-  }, [state])
+    return formatSpokenResponse(state, voiceOutcome?.mode ?? 'normal')
+  }, [state, voiceOutcome])
 
   const hasResponse = Boolean(voiceResponse && state)
 
@@ -199,11 +207,17 @@ export default function VoiceMirrorScreen() {
         setInterimTranscript('')
 
         const finalText = transcriptRef.current.trim()
-        if (finalText.length > 0) {
-          void runReflection(finalText)
-        } else if (!errorRef.current) {
-          setError('I didn’t catch a clear phrase. Try one short sentence, or use text instead.')
+        const assessment = evaluateTranscript(finalText, confidenceRef.current)
+
+        if (assessment.status === 'retry') {
+          setTranscript(assessment.cleanedTranscript)
+          setError(humanizeTranscriptRetryReason(assessment.reason))
+          return
         }
+
+        setTranscript(assessment.cleanedTranscript)
+        transcriptRef.current = assessment.cleanedTranscript
+        void runReflection(assessment.cleanedTranscript)
       },
     })
 
@@ -279,9 +293,10 @@ export default function VoiceMirrorScreen() {
           </div>
         )}
 
-        {voiceResponse && state && (
+        {voiceResponse && state && voiceOutcome && (
           <VoiceResponsePlayer
             response={voiceResponse}
+            mode={voiceOutcome.mode}
             speechSupported={speechSupported}
             speaking={speaking}
             onReplay={() => speakResponse(voiceResponse.fullText)}
