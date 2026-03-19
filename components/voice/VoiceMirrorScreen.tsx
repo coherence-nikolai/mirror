@@ -58,6 +58,8 @@ export default function VoiceMirrorScreen() {
     return formatSpokenResponse(state)
   }, [state])
 
+  const hasResponse = Boolean(voiceResponse && state)
+
   const speakResponse = useCallback((text: string) => {
     const didStart = speakText(text, {
       onStart: () => setSpeaking(true),
@@ -137,7 +139,7 @@ export default function VoiceMirrorScreen() {
     } finally {
       setLoading(false)
     }
-  }, [finalizeState, prefs.localOnly, prefs.useAI, speakResponse])
+  }, [finalizeState, prefs.localOnly, prefs.useAI])
 
   const stopListening = useCallback(() => {
     sessionRef.current?.stop()
@@ -256,17 +258,26 @@ export default function VoiceMirrorScreen() {
       </div>
 
       <div className={styles.stack}>
-        <VoiceCapturePanel
-          supported={supported}
-          listening={listening}
-          reflecting={loading}
-          transcript={transcript}
-          interimTranscript={interimTranscript}
-          error={error}
-          onStart={startListening}
-          onStop={stopListening}
-          onRetry={clearSession}
-        />
+        {!hasResponse && (
+          <VoiceCapturePanel
+            supported={supported}
+            listening={listening}
+            reflecting={loading}
+            transcript={transcript}
+            interimTranscript={interimTranscript}
+            error={error}
+            onStart={startListening}
+            onStop={stopListening}
+            onRetry={clearSession}
+          />
+        )}
+
+        {hasResponse && transcript && (
+          <div className={styles.heardInline}>
+            <span className="t-label">Heard</span>
+            <p className={`t-small ${styles.heardText}`}>{transcript}</p>
+          </div>
+        )}
 
         {voiceResponse && state && (
           <VoiceResponsePlayer
