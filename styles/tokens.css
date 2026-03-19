@@ -1,22 +1,22 @@
 :root {
   /* ── Color ── */
-  --bg-base:      #080a0e;
-  --bg-surface:   #0f1216;
-  --bg-raised:    #141820;
+  --bg-base:      #0c0f14;
+  --bg-surface:   #151922;
+  --bg-raised:    #1b212b;
   --bg-overlay:   rgba(8, 10, 14, 0.92);
 
-  --border-dim:   rgba(255, 255, 255, 0.055);
-  --border-mid:   rgba(255, 255, 255, 0.10);
-  --border-warm:  rgba(200, 185, 138, 0.18);
+  --border-dim:   rgba(255, 255, 255, 0.085);
+  --border-mid:   rgba(255, 255, 255, 0.15);
+  --border-warm:  rgba(200, 185, 138, 0.24);
 
   --text-primary: #e8e4dc;
-  --text-dim:     rgba(232, 228, 220, 0.50);
-  --text-dimmer:  rgba(232, 228, 220, 0.28);
-  --text-faint:   rgba(232, 228, 220, 0.14);
+  --text-dim:     rgba(232, 228, 220, 0.68);
+  --text-dimmer:  rgba(232, 228, 220, 0.46);
+  --text-faint:   rgba(232, 228, 220, 0.24);
 
   --accent:       #c8b98a;
   --accent-dim:   rgba(200, 185, 138, 0.18);
-  --accent-faint: rgba(200, 185, 138, 0.08);
+  --accent-faint: rgba(200, 185, 138, 0.12);
 
   /* Reflection block accents */
   --seen-color:   #7eb8c9;
