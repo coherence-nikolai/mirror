@@ -67,6 +67,9 @@ export default function ReturnScreen() {
       {state ? (
         <div className={styles.content}>
           <div className={`${styles.shiftArea} emerge`}>
+            <div className="t-label" style={{ marginBottom: '12px', display: 'block' }}>
+              Return
+            </div>
             <p className={`t-shift ${styles.shift}`}>{state.shiftPhrase}</p>
           </div>
 
@@ -108,6 +111,9 @@ export default function ReturnScreen() {
         </div>
       ) : (
         <div className={styles.empty}>
+          <div className="t-label" style={{ marginBottom: '12px', display: 'block' }}>
+            Return
+          </div>
           <p className="t-prompt">Take a breath.</p>
           <p className="t-small" style={{ marginTop: '16px', textAlign: 'center' }}>
             Return mode. Fewer words. Stronger ground.
