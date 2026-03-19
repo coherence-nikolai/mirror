@@ -13,18 +13,85 @@ type Props = {
   privateSession?: boolean
 }
 
+const VAGUE_VALUES = new Set(['', 'unresolved', 'unsettled'])
+
+function humanizePatternLabel(pattern: string | undefined): string {
+  if (!pattern) return ''
+  return pattern === 'unresolved' ? 'unsettled' : pattern
+}
+
+function titleCaseEmotion(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+function extractNamedEmotion(rawInput: string): string | null {
+  const lower = rawInput.toLowerCase()
+
+  const emotionMap: Array<[RegExp, string]> = [
+    [/(^|\b)(sad|sadness)(\b|$)/, 'sadness'],
+    [/(^|\b)(anxious|anxiety)(\b|$)/, 'anxiety'],
+    [/(^|\b)(overwhelmed|overwhelm)(\b|$)/, 'overwhelm'],
+    [/(^|\b)(angry|anger|mad)(\b|$)/, 'anger'],
+    [/(^|\b)(afraid|fearful|scared|fear)(\b|$)/, 'fear'],
+    [/(^|\b)(lonely|alone|isolation)(\b|$)/, 'loneliness'],
+    [/(^|\b)(grief|grieving|grief-stricken)(\b|$)/, 'grief'],
+    [/(^|\b)(tired|exhausted|drained|burnt out|burned out)(\b|$)/, 'exhaustion'],
+    [/(^|\b)(confused|confusion|uncertain)(\b|$)/, 'confusion'],
+  ]
+
+  for (const [pattern, label] of emotionMap) {
+    if (pattern.test(lower)) return label
+  }
+
+  return null
+}
+
+function isLowConfidence(state: MirrorState): boolean {
+  return state.primaryPattern === 'unresolved' || state.confidence < 0.5
+}
+
+function buildSeenText(state: MirrorState): string {
+  const candidate = (state.seen ?? state.distortionType ?? '').trim()
+  const namedEmotion = extractNamedEmotion(state.rawInput)
+
+  if (!isLowConfidence(state) && !VAGUE_VALUES.has(candidate.toLowerCase())) {
+    return candidate
+  }
+
+  if (namedEmotion) {
+    return `${titleCaseEmotion(namedEmotion)} is here.`
+  }
+
+  return 'Something difficult is here.'
+}
+
+function buildDistortionText(state: MirrorState, resolvedSeenText: string): string {
+  const candidate = (state.distortion ?? state.distortionType ?? '').trim()
+  const normalized = candidate.toLowerCase()
+
+  if (!isLowConfidence(state) && !VAGUE_VALUES.has(normalized) && normalized !== resolvedSeenText.toLowerCase()) {
+    return candidate
+  }
+
+  if (normalized && normalized !== resolvedSeenText.toLowerCase() && normalized !== 'unresolved') {
+    return candidate
+  }
+
+  return 'The feeling may be narrowing the view.'
+}
+
 export default function ReflectionResult({ state, onClear, onRetry, privateSession = false }: Props) {
   const [helped, setHelped] = useState<boolean | null>(null)
   const [saved, setSaved] = useState(false)
   const [copied, setCopied] = useState(false)
 
   const seenText = useMemo(
-    () => (state.seen ?? state.distortionType ?? '').trim(),
-    [state.seen, state.distortionType],
+    () => buildSeenText(state),
+    [state],
   )
   const distortionText = useMemo(
-    () => (state.distortion ?? state.distortionType ?? '').trim(),
-    [state.distortion, state.distortionType],
+    () => buildDistortionText(state, seenText),
+    [state, seenText],
   )
 
   const handleHelped = (val: boolean) => {
@@ -80,8 +147,8 @@ ${state.shiftPhrase}` : '',
       </div>
 
       <div className={styles.metaRow}>
-        <span className={`mtag pattern`}>{state.primaryPattern}</span>
-        {state.secondaryPattern && <span className="mtag">{state.secondaryPattern}</span>}
+        <span className={`mtag pattern`}>{humanizePatternLabel(state.primaryPattern)}</span>
+        {state.secondaryPattern && <span className="mtag">{humanizePatternLabel(state.secondaryPattern)}</span>}
         <span className={`mtag ${timeClass[state.timeOrientation] ?? ''}`}>{state.timeOrientation}</span>
         {state.bodyLocation && <span className="mtag">{state.bodyLocation}</span>}
         <div className="ibar">
