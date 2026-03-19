@@ -1,2 +1,7 @@
-import { redirect } from 'next/navigation'
-export default function Root() { redirect('/mirror') }
+import VoiceMirrorScreen from '@/components/voice/VoiceMirrorScreen'
+
+export const metadata = { title: 'Mirror — Voice' }
+
+export default function VoicePage() {
+  return <VoiceMirrorScreen />
+}
