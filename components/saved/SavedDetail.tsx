@@ -26,7 +26,7 @@ function formatSavedDate(value: string) {
 
 function buildCopyText(entry: LogEntry) {
   return [
-    entry.rawInput ? `Heard\n${entry.rawInput}` : '',
+    entry.rawInput ? `Entry\n${entry.rawInput}` : '',
     entry.seen ? `Seen\n${entry.seen}` : '',
     entry.distortion ? `Distortion\n${entry.distortion}` : '',
     entry.shiftPhrase ? `Shift\n${entry.shiftPhrase}` : '',
@@ -72,7 +72,7 @@ export default function SavedDetail({ id }: Props) {
       <div className="shell">
         <Header rightSlot={headerRight} />
         <div className={styles.emptyWrap}>
-          <p className="t-prompt">This saved reflection could not be found.</p>
+          <p className="t-prompt">This saved reflection isn’t here anymore.</p>
           <div className={styles.emptyActions}>
             <Link href="/saved" className="btn accent">Back to saved</Link>
           </div>
@@ -94,7 +94,7 @@ export default function SavedDetail({ id }: Props) {
 
         {entry.rawInput && (
           <section className={styles.block}>
-            <div className={`t-label ${styles.blockLabel}`}>Heard</div>
+            <div className={`t-label ${styles.blockLabel}`}>Entry</div>
             <p className={`t-body ${styles.bodyText}`}>{entry.rawInput}</p>
           </section>
         )}

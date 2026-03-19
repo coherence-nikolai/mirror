@@ -80,7 +80,7 @@ export default function SavedScreen() {
               {saved.map(s => (
                 <div key={s.id} className={styles.savedItem}>
                   <Link href={`/saved/${s.id}`} className={styles.savedLink}>
-                    <div className={`t-label ${styles.savedLabel}`}>Heard</div>
+                    <div className={`t-label ${styles.savedLabel}`}>Entry</div>
                     <p className={`t-body ${styles.savedInput}`}>{getEntryTitle(s)}</p>
 
                     <div className={`t-label ${styles.savedLabel}`}>Shift</div>
@@ -134,7 +134,7 @@ export default function SavedScreen() {
       {tab === 'effective' && (
         <div className={`${styles.panel} fade-in`}>
           {phrases.length === 0 ? (
-            <p className={`t-prompt ${styles.empty}`}>Mark reflections as “helped” to track effective phrases.</p>
+            <p className={`t-prompt ${styles.empty}`}>Mark reflections as helped to track what lands.</p>
           ) : (
             phrases.map(({ phrase, helpedCount }) => (
               <div key={phrase} className={styles.effectiveItem}>
