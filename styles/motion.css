@@ -1,0 +1,44 @@
+/* ── Motion language: emerge, settle, exhale. Never snap. ── */
+
+@keyframes emerge {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes orbBreathe {
+  0%, 100% { transform: scale(var(--orb-scale, 1));         opacity: 0.65; }
+  50%      { transform: scale(calc(var(--orb-scale, 1) * 1.10)); opacity: 1; }
+}
+
+@keyframes orbProcess {
+  0%, 100% { transform: scale(1); opacity: 0.70; }
+  50%      { transform: scale(1.14); opacity: 1; }
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.20; transform: scale(1); }
+  50%      { opacity: 0.80; transform: scale(1.5); }
+}
+
+/* Staggered emergence for reflection blocks */
+.emerge        { animation: emerge 380ms ease both; }
+.emerge-1      { animation: emerge 380ms ease 80ms  both; }
+.emerge-2      { animation: emerge 380ms ease 200ms both; }
+.emerge-3      { animation: emerge 380ms ease 340ms both; }
+.emerge-4      { animation: emerge 380ms ease 460ms both; }
+
+.fade-in       { animation: fadeIn 280ms ease both; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:   0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration:  0.01ms !important;
+  }
+}

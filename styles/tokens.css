@@ -1,0 +1,49 @@
+:root {
+  /* ── Color ── */
+  --bg-base:      #080a0e;
+  --bg-surface:   #0f1216;
+  --bg-raised:    #141820;
+  --bg-overlay:   rgba(8, 10, 14, 0.92);
+
+  --border-dim:   rgba(255, 255, 255, 0.055);
+  --border-mid:   rgba(255, 255, 255, 0.10);
+  --border-warm:  rgba(200, 185, 138, 0.18);
+
+  --text-primary: #e8e4dc;
+  --text-dim:     rgba(232, 228, 220, 0.50);
+  --text-dimmer:  rgba(232, 228, 220, 0.28);
+  --text-faint:   rgba(232, 228, 220, 0.14);
+
+  --accent:       #c8b98a;
+  --accent-dim:   rgba(200, 185, 138, 0.18);
+  --accent-faint: rgba(200, 185, 138, 0.08);
+
+  /* Reflection block accents */
+  --seen-color:   #7eb8c9;
+  --dist-color:   #c97a6a;
+  --shift-color:  #8dba8d;
+  --action-color: #b8a0c8;
+  --crisis-color: #c8b98a;
+
+  /* ── Spacing scale ── */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-12:48px;
+  --sp-16:64px;
+
+  /* ── Radius ── */
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+
+  /* ── Transitions ── */
+  --t-micro:   140ms ease;
+  --t-short:   280ms ease;
+  --t-medium:  420ms ease;
+  --t-long:    800ms ease;
+  --t-orb:    1200ms ease;
+}
