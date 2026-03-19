@@ -46,11 +46,11 @@ body::before {
 /* Button base */
 .btn {
   background: none;
-  border: 1px solid var(--border-dim);
-  color: var(--text-dim);
+  border: 1px solid var(--border-mid);
+  color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.18em;
+  font-size: 12px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 9px 18px;
   cursor: pointer;
@@ -58,7 +58,7 @@ body::before {
   transition: color var(--t-micro), border-color var(--t-micro);
   white-space: nowrap;
 }
-.btn:hover  { color: var(--text-primary); border-color: var(--border-mid); }
+.btn:hover  { color: var(--text-primary); border-color: rgba(200, 185, 138, 0.28); }
 .btn:active { opacity: 0.7; }
 .btn:disabled { opacity: 0.25; cursor: not-allowed; }
 .btn.accent {
@@ -81,12 +81,12 @@ body::before {
 
 /* Meta tag */
 .mtag {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: var(--r-sm);
-  border: 1px solid var(--border-dim);
+  border: 1px solid var(--border-mid);
   color: var(--text-dimmer);
   white-space: nowrap;
 }
@@ -95,7 +95,7 @@ body::before {
 .mtag.t-present{ border-color: rgba(141,186,141,.22); color: rgba(141,186,141,.55); }
 .mtag.t-future { border-color: rgba(126,184,201,.22); color: rgba(126,184,201,.55); }
 .mtag.t-mixed  { border-color: rgba(184,160,200,.22); color: rgba(184,160,200,.55); }
-.mtag.source   { font-size: 9px; opacity: 0.55; }
+.mtag.source   { font-size: 9px; opacity: 0.7; }
 
 /* Intensity bar */
 .ibar  { height: 3px; background: var(--border-dim); border-radius: 1px; overflow: hidden; flex: 1; min-width: 48px; max-width: 90px; }
