@@ -12,10 +12,10 @@
 
 /* Trust card */
 .trustCard {
-  background: var(--bg-surface);
+  background: var(--bg-raised);
   border: 1px solid var(--border-dim);
   border-radius: var(--r-sm);
-  padding: 16px 18px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   gap: var(--sp-2);
@@ -33,7 +33,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-4);
-  padding: 14px 0;
+  padding: 16px 0;
   border-bottom: 1px solid var(--border-dim);
 }
 
@@ -45,7 +45,7 @@
 }
 
 .toggleLabel {
-  font-size: 14px;
+  font-size: 15px;
   font-family: var(--font-sans);
   font-weight: 300;
   color: var(--text-primary);
@@ -56,9 +56,9 @@
 }
 
 .toggleBtn {
-  width: 36px;
-  height: 20px;
-  border-radius: 10px;
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
   background: var(--bg-raised);
   border: 1px solid var(--border-mid);
   cursor: pointer;
@@ -74,8 +74,8 @@
 
 .toggleThumb {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: var(--text-dimmer);
   top: 2px;
@@ -84,7 +84,7 @@
 }
 
 .toggleBtn.on .toggleThumb {
-  transform: translateX(16px);
+  transform: translateX(18px);
   background: var(--accent);
 }
 
@@ -112,5 +112,5 @@
 
 .version {
   margin-top: var(--sp-12);
-  color: var(--text-faint);
+  color: var(--text-dimmer);
 }
