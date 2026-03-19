@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import type { LogEntry } from '@/lib/mirror/storage/historyStore'
@@ -9,6 +9,25 @@ import { getPatternFrequency, getEffectivePhrases } from '@/lib/mirror/personali
 import styles from './SavedScreen.module.css'
 
 type Tab = 'shifts' | 'patterns' | 'effective'
+
+function formatSavedDate(value: string) {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return ''
+  return date.toLocaleString('en-AU', {
+    day: 'numeric',
+    month: 'short',
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+}
+
+function getEntryTitle(entry: LogEntry) {
+  const raw = (entry.rawInput ?? '').trim()
+  if (raw) return raw
+  const seen = (entry.seen ?? '').trim()
+  if (seen) return seen
+  return 'Saved reflection'
+}
 
 export default function SavedScreen() {
   const [tab,      setTab]      = useState<Tab>('shifts')
@@ -22,12 +41,17 @@ export default function SavedScreen() {
     setPhrases(getEffectivePhrases())
   }, [])
 
+  const savedCountLabel = useMemo(
+    () => `${saved.length} ${saved.length === 1 ? 'saved reflection' : 'saved reflections'}`,
+    [saved.length],
+  )
+
   const handleRemove = (id: string) => {
     unsaveReflection(id)
     setSaved(prev => prev.filter(s => s.id !== id))
   }
 
-  const headerRight = <Link href="/mirror" className="btn">← Mirror</Link>
+  const headerRight = <Link href="/mirror" className="btn">Mirror</Link>
 
   return (
     <div className="shell">
@@ -40,33 +64,50 @@ export default function SavedScreen() {
             className={`${styles.tabBtn} ${tab === t ? styles.active : ''}`}
             onClick={() => setTab(t)}
           >
-            {t === 'shifts' ? 'Saved shifts' : t === 'patterns' ? 'Patterns' : 'What helped'}
+            {t === 'shifts' ? 'Saved' : t === 'patterns' ? 'Patterns' : 'Helped'}
           </button>
         ))}
       </div>
 
-      {/* Saved shifts */}
       {tab === 'shifts' && (
         <div className={`${styles.panel} fade-in`}>
+          <p className={`t-small ${styles.listMeta}`}>{savedCountLabel}</p>
+
           {saved.length === 0 ? (
-            <p className={`t-prompt ${styles.empty}`}>No saved shifts yet.</p>
+            <p className={`t-prompt ${styles.empty}`}>No saved reflections yet.</p>
           ) : (
-            saved.map(s => (
-              <div key={s.id} className={styles.shiftItem}>
-                <div>
-                  <p className={`t-shift ${styles.shiftPhrase}`}>{s.shiftPhrase}</p>
-                  <p className={`t-small ${styles.shiftMeta}`}>
-                    {s.primaryPattern} · {new Date(s.createdAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
-                  </p>
+            <div className={styles.savedList}>
+              {saved.map(s => (
+                <div key={s.id} className={styles.savedItem}>
+                  <Link href={`/saved/${s.id}`} className={styles.savedLink}>
+                    <div className={`t-label ${styles.savedLabel}`}>Heard</div>
+                    <p className={`t-body ${styles.savedInput}`}>{getEntryTitle(s)}</p>
+
+                    <div className={`t-label ${styles.savedLabel}`}>Shift</div>
+                    <p className={`t-shift ${styles.shiftPhrase}`}>{s.shiftPhrase}</p>
+
+                    <div className={`t-small ${styles.savedMeta}`}>
+                      <span>{s.primaryPattern}</span>
+                      <span>·</span>
+                      <span>{formatSavedDate(s.createdAt)}</span>
+                    </div>
+                  </Link>
+
+                  <button
+                    className={styles.removeBtn}
+                    onClick={() => handleRemove(s.id)}
+                    aria-label="Remove saved reflection"
+                    type="button"
+                  >
+                    ×
+                  </button>
                 </div>
-                <button className={styles.removeBtn} onClick={() => handleRemove(s.id)} aria-label="Remove">×</button>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
       )}
 
-      {/* Patterns */}
       {tab === 'patterns' && (
         <div className={`${styles.panel} fade-in`}>
           {patterns.length === 0 ? (
@@ -90,11 +131,10 @@ export default function SavedScreen() {
         </div>
       )}
 
-      {/* What helped */}
       {tab === 'effective' && (
         <div className={`${styles.panel} fade-in`}>
           {phrases.length === 0 ? (
-            <p className={`t-prompt ${styles.empty}`}>Mark reflections as "helped" to track effective phrases.</p>
+            <p className={`t-prompt ${styles.empty}`}>Mark reflections as “helped” to track effective phrases.</p>
           ) : (
             phrases.map(({ phrase, helpedCount }) => (
               <div key={phrase} className={styles.effectiveItem}>
