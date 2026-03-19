@@ -17,7 +17,7 @@
     rgba(200,185,138,0.03) 65%,
     transparent
   );
-  border: 1px solid rgba(200,185,138,0.16);
+  border: 1px solid rgba(200,185,138,0.22);
   position: relative;
   z-index: 2;
   animation: orbBreathe var(--pulse-speed, 10s) ease-in-out infinite;
@@ -29,7 +29,7 @@
   position: absolute;
   inset: -18px;
   border-radius: 50%;
-  border: 1px solid rgba(200,185,138,0.07);
+  border: 1px solid rgba(200,185,138,0.10);
   animation: orbBreathe var(--pulse-speed, 10s) ease-in-out infinite 250ms;
 }
 
@@ -37,7 +37,7 @@
   position: absolute;
   inset: -34px;
   border-radius: 50%;
-  border: 1px solid rgba(200,185,138,0.03);
+  border: 1px solid rgba(200,185,138,0.05);
   animation: orbBreathe var(--pulse-speed, 10s) ease-in-out infinite 500ms;
   pointer-events: none;
 }
@@ -51,10 +51,10 @@
   bottom: -26px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 9.5px;
-  letter-spacing: 0.32em;
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--text-dimmer);
+  color: var(--text-dim);
   white-space: nowrap;
   font-family: var(--font-sans);
   font-weight: 300;
