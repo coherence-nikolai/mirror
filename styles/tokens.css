@@ -5,14 +5,14 @@
   --bg-raised:    #1b212b;
   --bg-overlay:   rgba(8, 10, 14, 0.92);
 
-  --border-dim:   rgba(255, 255, 255, 0.11);
-  --border-mid:   rgba(255, 255, 255, 0.18);
+  --border-dim:   rgba(255, 255, 255, 0.13);
+  --border-mid:   rgba(255, 255, 255, 0.20);
   --border-warm:  rgba(200, 185, 138, 0.24);
 
   --text-primary: #e8e4dc;
-  --text-dim:     rgba(232, 228, 220, 0.78);
-  --text-dimmer:  rgba(232, 228, 220, 0.62);
-  --text-faint:   rgba(232, 228, 220, 0.38);
+  --text-dim:     rgba(232, 228, 220, 0.82);
+  --text-dimmer:  rgba(232, 228, 220, 0.68);
+  --text-faint:   rgba(232, 228, 220, 0.44);
 
   --accent:       #c8b98a;
   --accent-dim:   rgba(200, 185, 138, 0.18);
