@@ -29,29 +29,47 @@ export default function VoiceCapturePanel({
   const preview = [transcript, interimTranscript].filter(Boolean).join(' ').trim()
   const hasPreview = preview.length > 0
 
+  const stateLabel = reflecting
+    ? 'Reflecting'
+    : listening
+      ? 'Listening'
+      : hasPreview
+        ? 'Heard'
+        : 'Voice'
+
+  const caption = reflecting
+    ? 'Working from what I heard.'
+    : listening
+      ? 'Speak one state clearly. Short is better.'
+      : 'Tap once. Speak one state clearly.'
+
   return (
     <section className={styles.panel}>
       <div className="t-label" style={{ marginBottom: '12px', display: 'block' }}>
-        Voice
+        {stateLabel}
       </div>
 
       {!supported ? (
         <div className={styles.messageBlock}>
-          <p className="t-body">Voice capture is not available here.</p>
+          <p className="t-body">Voice capture isn’t supported here.</p>
+          <p className={`t-small ${styles.supportLine}`}>Try Safari, or use text instead.</p>
           <div className={styles.actions}>
             <Link href="/mirror" className="btn accent">Type instead</Link>
           </div>
         </div>
       ) : (
         <>
-          <p className={`t-small ${styles.caption}`}>
-            {listening ? 'Speak one state clearly.' : reflecting ? 'Reflecting from transcript…' : 'Tap once. Speak one state clearly.'}
-          </p>
+          <p className={`t-small ${styles.caption}`}>{caption}</p>
+
+          {!listening && !reflecting && !hasPreview && (
+            <p className={`t-small ${styles.supportLine}`}>When you finish, tap Stop.</p>
+          )}
 
           {hasPreview && (
             <div className={styles.preview}>
-              <div className={`t-label ${styles.previewLabel}`}>Transcript</div>
+              <div className={`t-label ${styles.previewLabel}`}>Heard</div>
               <p className={`t-body ${styles.previewText}`}>{preview}</p>
+              <p className={`t-small ${styles.previewHelp}`}>Check that this matches what you said.</p>
             </div>
           )}
 
@@ -60,7 +78,7 @@ export default function VoiceCapturePanel({
           <div className={styles.actions}>
             {!listening ? (
               <button className="btn accent" type="button" onClick={onStart} disabled={reflecting}>
-                {transcript ? 'Listen again' : 'Start voice'}
+                {hasPreview ? 'Listen again' : 'Start voice'}
               </button>
             ) : (
               <button className="btn accent" type="button" onClick={onStop}>
@@ -68,7 +86,7 @@ export default function VoiceCapturePanel({
               </button>
             )}
 
-            {!listening && transcript && (
+            {!listening && hasPreview && (
               <button className="btn" type="button" onClick={onRetry} disabled={reflecting}>
                 Try again
               </button>

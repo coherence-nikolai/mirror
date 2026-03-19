@@ -9,6 +9,10 @@
   color: var(--text-dim);
 }
 
+.supportLine {
+  color: var(--text-dimmer);
+}
+
 .preview {
   background: var(--bg-surface);
   border: 1px solid var(--border-dim);
@@ -22,6 +26,11 @@
 
 .previewText {
   white-space: pre-wrap;
+}
+
+.previewHelp {
+  margin-top: 10px;
+  color: var(--text-dimmer);
 }
 
 .actions {
