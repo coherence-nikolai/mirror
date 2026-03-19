@@ -1,4 +1,5 @@
 import type { MirrorState } from '@/lib/mirror/types'
+import type { VoiceOutcomeMode } from '@/lib/voice/resolveVoiceOutcome'
 
 export type VoiceSpokenResponse = {
   seenLine: string
@@ -73,14 +74,33 @@ function pickPaceLine(state: MirrorState): string {
   return 'Slow the exhale.'
 }
 
-export function formatSpokenResponse(state: MirrorState): VoiceSpokenResponse {
-  const seenLine = pickSeenLine(state)
-  const shiftLine = pickShiftLine(state)
-  const paceLine = pickPaceLine(state)
+export function formatSpokenResponse(
+  state: MirrorState,
+  mode: VoiceOutcomeMode = 'normal'
+): VoiceSpokenResponse {
+  let seenLine = pickSeenLine(state)
+  let shiftLine = pickShiftLine(state)
+  let paceLine = pickPaceLine(state)
 
-  const fullText = [seenLine, shiftLine, paceLine]
-    .filter(Boolean)
-    .join(' ')
+  if (mode === 'lowConfidence') {
+    seenLine = extractNamedEmotion(state.rawInput ?? '') ?? 'Something difficult is here.'
+    shiftLine = 'Stay with one steady breath.'
+    paceLine = 'One breath.'
+  }
+
+  if (mode === 'distress') {
+    seenLine = extractNamedEmotion(state.rawInput ?? '') ?? 'This is heavy.'
+    shiftLine = 'Come back to what is here.'
+    paceLine = 'Slow the exhale.'
+  }
+
+  if (mode === 'crisis') {
+    seenLine = 'Pause here.'
+    shiftLine = 'Take one slower breath.'
+    paceLine = 'Support is available now.'
+  }
+
+  const fullText = [seenLine, shiftLine, paceLine].filter(Boolean).join(' ')
 
   return {
     seenLine,
