@@ -1,0 +1,48 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: 0 0 var(--sp-4);
+}
+
+.caption {
+  color: var(--text-dim);
+}
+
+.preview {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--r-sm);
+  padding: 16px 18px;
+}
+
+.previewLabel {
+  margin-bottom: 8px;
+}
+
+.previewText {
+  white-space: pre-wrap;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  padding-top: var(--sp-1);
+}
+
+.error {
+  padding: 12px 14px;
+  background: rgba(201,122,106,0.10);
+  border: 1px solid rgba(201,122,106,0.24);
+  border-radius: var(--r-sm);
+  color: rgba(201,122,106,0.92);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.messageBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
