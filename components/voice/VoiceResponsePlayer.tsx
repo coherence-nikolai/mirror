@@ -34,7 +34,7 @@ export default function VoiceResponsePlayer({
   return (
     <section className={styles.card}>
       <div className="t-label" style={{ marginBottom: '12px', display: 'block' }}>
-        Spoken
+        Response
       </div>
 
       <div className={styles.lines}>
@@ -44,7 +44,7 @@ export default function VoiceResponsePlayer({
       </div>
 
       {mode === 'crisis' && (
-        <p className={`t-small ${styles.supportNote}`}>Return opens immediate support guidance.</p>
+        <p className={`t-small ${styles.supportNote}`}>Return opens support guidance.</p>
       )}
 
       <div className={styles.actions}>
@@ -60,7 +60,7 @@ export default function VoiceResponsePlayer({
             )}
           </>
         ) : !speechSupported ? (
-          <span className={`t-small ${styles.supportNote}`}>On-screen response only.</span>
+          <span className={`t-small ${styles.supportNote}`}>Response shown on screen.</span>
         ) : null}
 
         {showOpenReflection && (

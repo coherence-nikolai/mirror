@@ -40,8 +40,8 @@ export default function VoiceCapturePanel({
   const caption = reflecting
     ? 'Working from what I heard.'
     : listening
-      ? 'Speak one state clearly. Short is better.'
-      : 'Tap once. Speak one state clearly.'
+      ? 'Say one short line.'
+      : 'Tap once and say one short line.'
 
   return (
     <section className={styles.panel}>
@@ -51,10 +51,10 @@ export default function VoiceCapturePanel({
 
       {!supported ? (
         <div className={styles.messageBlock}>
-          <p className="t-body">Voice capture isn’t supported here.</p>
+          <p className="t-body">Voice isn’t available here.</p>
           <p className={`t-small ${styles.supportLine}`}>Try Safari, or use text instead.</p>
           <div className={styles.actions}>
-            <Link href="/mirror" className="btn accent">Type instead</Link>
+            <Link href="/mirror" className="btn accent">Use text</Link>
           </div>
         </div>
       ) : (
@@ -69,7 +69,7 @@ export default function VoiceCapturePanel({
             <div className={styles.preview}>
               <div className={`t-label ${styles.previewLabel}`}>Heard</div>
               <p className={`t-body ${styles.previewText}`}>{preview}</p>
-              <p className={`t-small ${styles.previewHelp}`}>Check that this matches what you said.</p>
+              <p className={`t-small ${styles.previewHelp}`}>Make sure this matches what you said.</p>
             </div>
           )}
 
@@ -92,7 +92,7 @@ export default function VoiceCapturePanel({
               </button>
             )}
 
-            <Link href="/mirror" className="btn">Type instead</Link>
+            <Link href="/mirror" className="btn">Use text</Link>
           </div>
         </>
       )}
