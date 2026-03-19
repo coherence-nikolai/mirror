@@ -23,7 +23,7 @@
 }
 
 .shiftArea {
-  padding: 24px 0 8px;
+  padding: 24px 0 12px;
   border-top: 1px solid var(--border-dim);
 }
 
@@ -32,9 +32,10 @@
 }
 
 .practiceArea {
-  padding: 16px 20px;
+  padding: 18px 22px;
   background: var(--bg-surface);
   border-radius: var(--r-sm);
+  border: 1px solid var(--border-dim);
   border-left: 2px solid var(--shift-color);
 }
 
@@ -54,16 +55,17 @@
 }
 
 .supportArea {
-  padding: 20px;
+  padding: 22px;
   background: var(--bg-surface);
   border-radius: var(--r-sm);
+  border: 1px solid var(--border-dim);
   border-left: 2px solid var(--crisis-color);
 }
 
 .supportLabel {
   display: block;
   margin-bottom: var(--sp-3);
-  color: rgba(200,185,138,0.6) !important;
+  color: rgba(200,185,138,0.8) !important;
 }
 
 .supportLines {
@@ -75,9 +77,9 @@
 .supportLine {
   display: flex;
   gap: var(--sp-3);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-dim);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .supportLine strong {
