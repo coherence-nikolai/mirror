@@ -6,20 +6,21 @@
 .metaRow {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
+  gap: var(--sp-3);
   flex-wrap: wrap;
   margin-bottom: var(--sp-6);
 }
 
 /* ── Blocks ── */
 .block {
-  padding: 18px 20px;
+  padding: 20px 22px;
   background: var(--bg-surface);
   border-radius: var(--r-sm);
+  border: 1px solid var(--border-dim);
   border-left: 2px solid transparent;
   position: relative;
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .block::before {
@@ -36,18 +37,18 @@
 .actionBlock{ border-left-color: var(--action-color); }
 
 .blockLabel {
-  font-size: 8.5px;
-  letter-spacing: 0.40em;
+  font-size: 10px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   font-family: var(--font-sans);
   font-weight: 400;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-.seenBlock   .blockLabel { color: var(--seen-color);   opacity: 0.65; }
-.distBlock   .blockLabel { color: var(--dist-color);   opacity: 0.65; }
-.shiftBlock  .blockLabel { color: var(--shift-color);  opacity: 0.65; }
-.actionBlock .blockLabel { color: var(--action-color); opacity: 0.65; }
+.seenBlock   .blockLabel { color: var(--seen-color);   opacity: 0.82; }
+.distBlock   .blockLabel { color: var(--dist-color);   opacity: 0.82; }
+.shiftBlock  .blockLabel { color: var(--shift-color);  opacity: 0.82; }
+.actionBlock .blockLabel { color: var(--action-color); opacity: 0.82; }
 
 .blockText {
   white-space: pre-line;
@@ -58,8 +59,8 @@
 }
 
 .microLine {
-  margin-top: 10px;
-  padding-top: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
   border-top: 1px solid var(--border-dim);
 }
 
@@ -68,7 +69,7 @@
   display: flex;
   align-items: center;
   gap: var(--sp-2);
-  padding: 14px 0;
+  padding: 16px 0;
   border-top: 1px solid var(--border-dim);
   margin-top: var(--sp-2);
 }
@@ -81,7 +82,7 @@
 /* ── Actions ── */
 .actions {
   display: flex;
-  gap: var(--sp-2);
+  gap: var(--sp-3);
   flex-wrap: wrap;
   padding-top: var(--sp-4);
 }
