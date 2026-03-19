@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Orb from '@/components/orb/Orb'
@@ -16,6 +16,54 @@ const CRISIS_LINES = [
   { region: 'UK', label: 'Samaritans', contact: '116 123' },
   { region: 'NZ', label: 'Lifeline', contact: '0800 543 354' },
 ]
+
+const VAGUE_VALUES = new Set(['', 'unresolved', 'unsettled'])
+
+function titleCaseEmotion(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+function extractNamedEmotion(rawInput: string): string | null {
+  const lower = rawInput.toLowerCase()
+
+  const emotionMap: Array<[RegExp, string]> = [
+    [/(^|\b)(sad|sadness)(\b|$)/, 'sadness'],
+    [/(^|\b)(anxious|anxiety)(\b|$)/, 'anxiety'],
+    [/(^|\b)(overwhelmed|overwhelm)(\b|$)/, 'overwhelm'],
+    [/(^|\b)(angry|anger|mad)(\b|$)/, 'anger'],
+    [/(^|\b)(afraid|fearful|scared|fear)(\b|$)/, 'fear'],
+    [/(^|\b)(lonely|alone|isolation)(\b|$)/, 'loneliness'],
+    [/(^|\b)(grief|grieving|grief-stricken)(\b|$)/, 'grief'],
+    [/(^|\b)(tired|exhausted|drained|burnt out|burned out)(\b|$)/, 'exhaustion'],
+    [/(^|\b)(confused|confusion|uncertain)(\b|$)/, 'confusion'],
+  ]
+
+  for (const [pattern, label] of emotionMap) {
+    if (pattern.test(lower)) return label
+  }
+
+  return null
+}
+
+function isLowConfidence(state: MirrorState): boolean {
+  return state.primaryPattern === 'unresolved' || state.confidence < 0.5
+}
+
+function buildReturnSupportText(state: MirrorState): string {
+  const candidate = (state.seen ?? state.distortion ?? state.distortionType ?? '').trim()
+  const normalized = candidate.toLowerCase()
+
+  if (!isLowConfidence(state) && !VAGUE_VALUES.has(normalized)) {
+    return candidate
+  }
+
+  const namedEmotion = extractNamedEmotion(state.rawInput)
+  if (namedEmotion) {
+    return `${titleCaseEmotion(namedEmotion)} is here.`
+  }
+
+  return 'Something difficult is here.'
+}
 
 export default function ReturnScreen() {
   const params = useSearchParams()
@@ -44,6 +92,7 @@ export default function ReturnScreen() {
   const isRed = state?.safetyTier === 'red'
   const bp = state ? (BREATH_PROFILES[state.primaryPattern] ?? BREATH_PROFILES.default) : BREATH_PROFILES.default
   const vs = state ? (VISUAL_PROFILES[state.primaryPattern] ?? VISUAL_PROFILES.default) : VISUAL_PROFILES.default
+  const supportText = useMemo(() => (state ? buildReturnSupportText(state) : ''), [state])
 
   const redVisual = isRed ? {
     ...vs,
@@ -79,9 +128,9 @@ export default function ReturnScreen() {
             </div>
           )}
 
-          {(state.seen ?? state.distortion ?? state.distortionType) && (
+          {supportText && (
             <div className={`${styles.seenArea} emerge-2`}>
-              <p className={`t-small ${styles.seen}`}>{state.seen ?? state.distortion ?? state.distortionType}</p>
+              <p className={`t-small ${styles.seen}`}>{supportText}</p>
             </div>
           )}
 
