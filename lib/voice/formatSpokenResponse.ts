@@ -30,6 +30,44 @@ function extractNamedEmotion(rawInput: string): string | null {
   return null
 }
 
+function classifyLowConfidenceInput(rawInput: string): 'unclear' | 'unsettled' | 'strain' | 'generic' {
+  const lower = rawInput.toLowerCase().trim()
+
+  if (
+    /\bi don['’]?t know\b/.test(lower)
+    || /\bdon['’]?t know\b/.test(lower)
+    || /\bnot sure\b/.test(lower)
+    || /\bunclear\b/.test(lower)
+    || /\bcan['’]?t tell\b/.test(lower)
+  ) {
+    return 'unclear'
+  }
+
+  if (
+    /\b(feels? off|feel off|off)\b/.test(lower)
+    || /\bweird\b/.test(lower)
+    || /\bstrange\b/.test(lower)
+    || /\bodd\b/.test(lower)
+    || /\bnot right\b/.test(lower)
+  ) {
+    return 'unsettled'
+  }
+
+  if (
+    /\bi['’]?m not okay\b/.test(lower)
+    || /\bim not okay\b/.test(lower)
+    || /\bnot ok\b/.test(lower)
+    || /\bnot okay\b/.test(lower)
+    || /\bcan['’]?t cope\b/.test(lower)
+    || /\btoo much\b/.test(lower)
+    || /\bstruggling\b/.test(lower)
+  ) {
+    return 'strain'
+  }
+
+  return 'generic'
+}
+
 function normalizeSentence(text: string): string {
   const trimmed = text.trim().replace(/\s+/g, ' ')
   if (!trimmed) return ''
@@ -83,9 +121,33 @@ export function formatSpokenResponse(
   let paceLine = pickPaceLine(state)
 
   if (mode === 'lowConfidence') {
-    seenLine = extractNamedEmotion(state.rawInput ?? '') ?? 'Something difficult is here.'
-    shiftLine = 'Stay with one steady breath.'
-    paceLine = 'One breath.'
+    const namedEmotion = extractNamedEmotion(state.rawInput ?? '')
+
+    if (namedEmotion) {
+      seenLine = namedEmotion
+      shiftLine = 'Stay with one steady breath.'
+      paceLine = 'One breath.'
+    } else {
+      const bucket = classifyLowConfidenceInput(state.rawInput ?? '')
+
+      if (bucket === 'unclear') {
+        seenLine = 'It is not clear yet.'
+        shiftLine = 'You do not need to force a name yet.'
+        paceLine = 'Stay with one breath.'
+      } else if (bucket === 'unsettled') {
+        seenLine = 'Something feels unsettled.'
+        shiftLine = 'Stay close to what is here before naming it.'
+        paceLine = 'One slower breath.'
+      } else if (bucket === 'strain') {
+        seenLine = 'Something is straining the system.'
+        shiftLine = 'Make the next moment smaller.'
+        paceLine = 'Slow the exhale.'
+      } else {
+        seenLine = 'Something is asking for attention.'
+        shiftLine = 'Stay with what is here before reaching outward.'
+        paceLine = 'One breath.'
+      }
+    }
   }
 
   if (mode === 'distress') {
