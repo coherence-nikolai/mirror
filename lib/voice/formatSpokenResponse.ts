@@ -71,9 +71,9 @@ function categoryLines(pattern: MirrorState['primaryPattern']) {
       }
     case 'threshold':
       return {
-        seenLine: 'The old shape may no longer fit.',
-        shiftLine: 'You do not need to name the next shape yet.',
-        paceLine: 'One steady breath.',
+        seenLine: 'What used to fit may not fit right now.',
+        shiftLine: 'You do not need to decide what this is yet.',
+        paceLine: 'One steady breath. Let this stay unfinished for a moment.',
       }
     default:
       return null
