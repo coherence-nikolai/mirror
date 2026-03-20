@@ -9,7 +9,9 @@ export type SourceType = 'deterministic' | 'ai' | 'hybrid' | 'repaired'
 export type PatternId =
   | 'overwhelm' | 'anxiety' | 'shame' | 'anger' | 'freeze'
   | 'grief' | 'depletion' | 'confusion' | 'isolation' | 'despair'
-  | 'guilt' | 'disconnection' | 'unresolved'
+  | 'guilt' | 'disconnection'
+  | 'unsettled' | 'unclear' | 'mixed' | 'tender' | 'threshold'
+  | 'unresolved'
 
 // ─── Visual + Breath ─────────────────────────────────────────────────────────
 
