@@ -10,33 +10,33 @@ function categoryWitness(pattern: string): WitnessResponse | null {
   switch (pattern) {
     case 'unsettled':
       return {
-        seen: 'Something feels off.',
-        permission: 'It does not need to be solved right now.',
-        witnessLine: 'Stay with one breath and let it be here.',
+        seen: 'Something here feels hard to place.',
+        permission: 'Nothing needs to be solved in this moment.',
+        witnessLine: 'Stay with one breath and let it be known.',
       }
     case 'unclear':
       return {
-        seen: 'This is not clear yet.',
-        permission: 'You do not need to force clarity.',
-        witnessLine: 'Let not-knowing stay open for one breath.',
+        seen: 'This does not need to become clear right away.',
+        permission: 'You are allowed to let this stay open.',
+        witnessLine: 'Let not-knowing rest in awareness for one breath.',
       }
     case 'mixed':
       return {
-        seen: 'Two pulls may be here at once.',
-        permission: 'Both can be here without being resolved yet.',
-        witnessLine: 'Notice one, then the other.',
+        seen: 'More than one thing may be asking for space.',
+        permission: 'It does not need to become simpler right now.',
+        witnessLine: 'Notice one, then the other, without choosing yet.',
       }
     case 'tender':
       return {
-        seen: 'Something tender is here.',
-        permission: 'It does not need to harden to be held.',
+        seen: 'Something here is asking to be held gently.',
+        permission: 'This can be here without hardening around it.',
         witnessLine: 'Soften around it for one breath.',
       }
     case 'threshold':
       return {
-        seen: 'What used to fit may not fit right now.',
-        permission: 'You do not need to decide what this is yet.',
-        witnessLine: 'Let this stay unfinished for one breath.',
+        seen: 'This may still be unfolding.',
+        permission: 'You do not need to settle it yet.',
+        witnessLine: 'Let this stay unfinished for one moment more.',
       }
     case 'overwhelm':
     case 'anxiety':
@@ -60,7 +60,7 @@ export function formatWitnessResponse(state: MirrorState): WitnessResponse {
   const seen = (state.seen ?? '').trim()
   if (seen) {
     return {
-      seen,
+      seen: 'Something here wants simple attention.',
       permission: 'It does not need to be resolved right now.',
       witnessLine: 'Stay with one breath and let it be known.',
     }
