@@ -126,6 +126,7 @@ export default function MirrorScreen() {
 
   const headerRight = (
     <>
+      <Link href="/witness" className="btn">Witness</Link>
       <Link href="/breath" className="btn">Breath</Link>
       <Link href="/voice" className="btn">Voice</Link>
       <Link href="/saved" className="btn">Saved</Link>
