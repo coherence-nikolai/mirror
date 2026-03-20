@@ -65,7 +65,7 @@ export default function VoiceResponsePlayer({
 
         {showOpenReflection && (
           <button className="btn" type="button" onClick={onOpenReflection}>
-            Open reflection
+            View full reflection
           </button>
         )}
 
