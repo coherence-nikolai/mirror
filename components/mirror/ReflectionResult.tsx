@@ -13,72 +13,7 @@ type Props = {
   privateSession?: boolean
 }
 
-const VAGUE_VALUES = new Set(['', 'unresolved', 'unsettled'])
-
-function humanizePatternLabel(pattern: string | undefined): string {
-  if (!pattern) return ''
-  return pattern === 'unresolved' ? 'unsettled' : pattern
-}
-
-function titleCaseEmotion(text: string): string {
-  return text.charAt(0).toUpperCase() + text.slice(1)
-}
-
-function extractNamedEmotion(rawInput: string): string | null {
-  const lower = rawInput.toLowerCase()
-
-  const emotionMap: Array<[RegExp, string]> = [
-    [/(^|\b)(sad|sadness)(\b|$)/, 'sadness'],
-    [/(^|\b)(anxious|anxiety)(\b|$)/, 'anxiety'],
-    [/(^|\b)(overwhelmed|overwhelm)(\b|$)/, 'overwhelm'],
-    [/(^|\b)(angry|anger|mad)(\b|$)/, 'anger'],
-    [/(^|\b)(afraid|fearful|scared|fear)(\b|$)/, 'fear'],
-    [/(^|\b)(lonely|alone|isolation)(\b|$)/, 'loneliness'],
-    [/(^|\b)(grief|grieving|grief-stricken)(\b|$)/, 'grief'],
-    [/(^|\b)(tired|exhausted|drained|burnt out|burned out)(\b|$)/, 'exhaustion'],
-    [/(^|\b)(confused|confusion|uncertain)(\b|$)/, 'confusion'],
-  ]
-
-  for (const [pattern, label] of emotionMap) {
-    if (pattern.test(lower)) return label
-  }
-
-  return null
-}
-
-function isLowConfidence(state: MirrorState): boolean {
-  return state.primaryPattern === 'unresolved' || state.confidence < 0.5
-}
-
-function buildSeenText(state: MirrorState): string {
-  const candidate = (state.seen ?? state.distortionType ?? '').trim()
-  const namedEmotion = extractNamedEmotion(state.rawInput)
-
-  if (!isLowConfidence(state) && !VAGUE_VALUES.has(candidate.toLowerCase())) {
-    return candidate
-  }
-
-  if (namedEmotion) {
-    return `${titleCaseEmotion(namedEmotion)} is here.`
-  }
-
-  return 'Something difficult is here.'
-}
-
-function buildDistortionText(state: MirrorState, resolvedSeenText: string): string {
-  const candidate = (state.distortion ?? state.distortionType ?? '').trim()
-  const normalized = candidate.toLowerCase()
-
-  if (!isLowConfidence(state) && !VAGUE_VALUES.has(normalized) && normalized !== resolvedSeenText.toLowerCase()) {
-    return candidate
-  }
-
-  if (normalized && normalized !== resolvedSeenText.toLowerCase() && normalized !== 'unresolved') {
-    return candidate
-  }
-
-  return 'The feeling may be narrowing the view.'
-}
+const SOFT_PATTERN_IDS = new Set(['unsettled', 'unclear', 'mixed', 'tender', 'threshold'])
 
 export default function ReflectionResult({ state, onClear, onRetry, privateSession = false }: Props) {
   const [helped, setHelped] = useState<boolean | null>(null)
@@ -86,13 +21,14 @@ export default function ReflectionResult({ state, onClear, onRetry, privateSessi
   const [copied, setCopied] = useState(false)
 
   const seenText = useMemo(
-    () => buildSeenText(state),
-    [state],
+    () => (state.seen ?? state.distortionType ?? '').trim(),
+    [state.seen, state.distortionType],
   )
   const distortionText = useMemo(
-    () => buildDistortionText(state, seenText),
-    [state, seenText],
+    () => (state.distortion ?? state.distortionType ?? '').trim(),
+    [state.distortion, state.distortionType],
   )
+  const distortionLabel = SOFT_PATTERN_IDS.has(state.primaryPattern) ? 'Tendency' : 'Distortion'
 
   const handleHelped = (val: boolean) => {
     setHelped(val)
@@ -110,8 +46,7 @@ export default function ReflectionResult({ state, onClear, onRetry, privateSessi
     const sections = [
       seenText ? `Seen
 ${seenText}` : '',
-      distortionText ? `Distortion
-${distortionText}` : '',
+      distortionText ? `${distortionLabel}\n${distortionText}` : '',
       state.shiftPhrase ? `Shift
 ${state.shiftPhrase}` : '',
       state.microPractice || '',
@@ -133,28 +68,17 @@ ${state.shiftPhrase}` : '',
     past: 't-past', present: 't-present', future: 't-future', mixed: 't-mixed',
   }
 
-  const sourceLabel: Record<string, string> = {
-    deterministic: 'Local',
-    ai: 'AI',
-    hybrid: 'Hybrid',
-    repaired: 'Repaired',
-  }
-
   return (
     <div className={styles.result}>
-      <div className="t-label" style={{ marginBottom: '12px', display: 'block' }}>
-        Reflection
-      </div>
-
       <div className={styles.metaRow}>
-        <span className={`mtag pattern`}>{humanizePatternLabel(state.primaryPattern)}</span>
-        {state.secondaryPattern && <span className="mtag">{humanizePatternLabel(state.secondaryPattern)}</span>}
+        <span className={`mtag pattern`}>{state.primaryPattern}</span>
+        {state.secondaryPattern && <span className="mtag">{state.secondaryPattern}</span>}
         <span className={`mtag ${timeClass[state.timeOrientation] ?? ''}`}>{state.timeOrientation}</span>
         {state.bodyLocation && <span className="mtag">{state.bodyLocation}</span>}
         <div className="ibar">
           <div className="ifill" style={{ width: `${Math.round(state.intensity * 100)}%` }} />
         </div>
-        <span className="mtag source">{sourceLabel[state.source] ?? state.source}</span>
+        <span className="mtag source">{state.source}</span>
       </div>
 
       <div className={`${styles.block} ${styles.seenBlock} emerge-1`}>
@@ -163,7 +87,7 @@ ${state.shiftPhrase}` : '',
       </div>
 
       <div className={`${styles.block} ${styles.distBlock} emerge-2`}>
-        <div className={styles.blockLabel}>Distortion</div>
+        <div className={styles.blockLabel}>{distortionLabel}</div>
         <p className={`t-body ${styles.blockText}`}>{distortionText}</p>
       </div>
 
