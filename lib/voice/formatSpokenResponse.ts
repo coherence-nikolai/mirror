@@ -59,9 +59,9 @@ function categoryLines(pattern: MirrorState['primaryPattern']) {
       }
     case 'mixed':
       return {
-        seenLine: 'More than one thing is here.',
-        shiftLine: 'Let both truths have some room.',
-        paceLine: 'Name the first feeling, then the second.',
+        seenLine: 'Two pulls may be here at once.',
+        shiftLine: 'Let both sides have a little room.',
+        paceLine: 'Name the first truth, then the second.',
       }
     case 'tender':
       return {
@@ -71,8 +71,8 @@ function categoryLines(pattern: MirrorState['primaryPattern']) {
       }
     case 'threshold':
       return {
-        seenLine: 'Something is shifting.',
-        shiftLine: 'You do not need to force the crossing.',
+        seenLine: 'The old shape may no longer fit.',
+        shiftLine: 'You do not need to name the next shape yet.',
         paceLine: 'One steady breath.',
       }
     default:
