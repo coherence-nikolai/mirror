@@ -141,6 +141,12 @@ export default function BreathScreen() {
 
   const phaseText = phase === 'inhale' ? 'Inhale' : 'Exhale'
   const cyclesLabel = `${Math.min(cyclesDone, mode.cycles)} / ${mode.cycles}`
+  const orbWrapClass = [
+    styles.orbWrap,
+    styles[`mode_${mode.id}`],
+    running ? styles.running : '',
+    phase === 'inhale' ? styles.phaseInhale : styles.phaseExhale,
+  ].filter(Boolean).join(' ')
 
   return (
     <div className={`shell ${styles.screen}`}>
@@ -159,8 +165,11 @@ export default function BreathScreen() {
         ))}
       </div>
 
-      <div className={styles.orbArea}>
-        <Orb breathProfile={BREATH_PROFILES.default} processing={running} reducedMotion={prefs.reducedMotion} />
+      <div className={orbWrapClass}>
+        <div className={styles.phaseHalo} aria-hidden="true" />
+        <div className={styles.orbArea}>
+          <Orb breathProfile={BREATH_PROFILES.default} processing={running} reducedMotion={prefs.reducedMotion} />
+        </div>
       </div>
 
       <div className={styles.centerBlock}>
