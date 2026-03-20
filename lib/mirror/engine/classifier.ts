@@ -51,6 +51,26 @@ const FUTURE_LEAKAGE = [
   "i'll never", 'it will always', 'nothing will ever', "it won't work",
 ]
 
+const UNSETTLED_SIGNALS = [
+  'weird', 'off', 'strange', 'odd', 'not right', 'unsettled',
+]
+
+const UNCLEAR_SIGNALS = [
+  "don't know", 'not sure', 'unclear', "can't tell", 'foggy', 'no idea',
+]
+
+const MIXED_SIGNALS = [
+  'mixed', 'conflicted', 'torn', 'two things at once', 'both true', 'part of me',
+]
+
+const TENDER_SIGNALS = [
+  'tender', 'vulnerable', 'raw', 'soft', 'hurt', 'exposed', 'sensitive',
+]
+
+const THRESHOLD_SIGNALS = [
+  'in-between', 'between things', 'shifting', 'changing', 'transition', 'threshold', 'on the cusp',
+]
+
 // ─── Signal map ───────────────────────────────────────────────────────────────
 
 export type SignalMap = {
@@ -61,6 +81,11 @@ export type SignalMap = {
   spiritual:  string[]
   pastLeak:   string[]
   futureLeak: string[]
+  unsettled:  string[]
+  unclear:    string[]
+  mixed:      string[]
+  tender:     string[]
+  threshold:  string[]
   selfDensity: number
 }
 
@@ -77,6 +102,11 @@ export function detectSignals(text: string): SignalMap {
     spiritual:   check(SPIRITUAL_DISTRESS),
     pastLeak:    check(PAST_LEAKAGE),
     futureLeak:  check(FUTURE_LEAKAGE),
+    unsettled:   check(UNSETTLED_SIGNALS),
+    unclear:     check(UNCLEAR_SIGNALS),
+    mixed:       check(MIXED_SIGNALS),
+    tender:      check(TENDER_SIGNALS),
+    threshold:   check(THRESHOLD_SIGNALS),
     selfDensity: words.length > 0 ? iCount / words.length : 0,
   }
 }
@@ -116,6 +146,11 @@ function softMatchOk(meta: PatternMeta, signals: SignalMap): boolean {
   if (s.pastLeak    != null && signals.pastLeak.length    < s.pastLeak)    return false
   if (s.abstract    != null && signals.abstract.length    < s.abstract)    return false
   if (s.spiritual   != null && signals.spiritual.length   < s.spiritual)   return false
+  if ((s as any).unsettled  != null && signals.unsettled.length  < (s as any).unsettled)  return false
+  if ((s as any).unclear    != null && signals.unclear.length    < (s as any).unclear)    return false
+  if ((s as any).mixed      != null && signals.mixed.length      < (s as any).mixed)      return false
+  if ((s as any).tender     != null && signals.tender.length     < (s as any).tender)     return false
+  if ((s as any).threshold  != null && signals.threshold.length  < (s as any).threshold)  return false
   if (s.selfDensity != null && signals.selfDensity        < s.selfDensity) return false
   return true
 }
@@ -149,6 +184,21 @@ export function classify(rawText: string): ClassificationResult {
   }
 
   // 3. Fallback routing
+  if (!matched && signals.mixed.length >= 1) {
+    matched = PATTERN_LIBRARY.find(p => p.id === 'mixed') ?? null
+  }
+  if (!matched && signals.tender.length >= 1) {
+    matched = PATTERN_LIBRARY.find(p => p.id === 'tender') ?? null
+  }
+  if (!matched && signals.threshold.length >= 1) {
+    matched = PATTERN_LIBRARY.find(p => p.id === 'threshold') ?? null
+  }
+  if (!matched && signals.unclear.length >= 1) {
+    matched = PATTERN_LIBRARY.find(p => p.id === 'unclear') ?? null
+  }
+  if (!matched && signals.unsettled.length >= 1) {
+    matched = PATTERN_LIBRARY.find(p => p.id === 'unsettled') ?? null
+  }
   if (!matched && signals.spiritual.length >= 1) {
     matched = PATTERN_LIBRARY.find(p => p.id === 'disconnection') ?? null
   }
@@ -165,9 +215,12 @@ export function classify(rawText: string): ClassificationResult {
   const agency    = deriveAgencyState(signals, matched?.agencyState ?? 'available')
 
   // Confidence: keyword match = 0.85, soft = 0.65, fallback = 0.45, none = 0.30
+  const nuanceSignals = signals.unsettled.length + signals.unclear.length + signals.mixed.length + signals.tender.length + signals.threshold.length
   const confidence = matched
     ? matched.keywords.some(k => lower.includes(k)) ? 0.85 : 0.65
-    : signals.collapse.length + signals.lowAgency.length > 0 ? 0.45 : 0.30
+    : signals.collapse.length + signals.lowAgency.length > 0 ? 0.45
+    : nuanceSignals > 0 ? 0.52
+    : 0.30
 
   return { pattern: matched, signals, intensity, timeOrientation: time, agencyState: agency, confidence }
 }

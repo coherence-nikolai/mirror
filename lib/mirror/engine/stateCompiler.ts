@@ -71,7 +71,7 @@ export function compileState(input: CompileInput): MirrorState {
     secondaryPattern: overrides?.primaryPattern ? overrides.secondaryPattern : (pattern?.secondary as PatternId | undefined),
     seen:             overrides?.seen ?? meta?.seen,
     distortionType:   overrides?.distortionType ?? meta?.distortionType ?? 'unresolved',
-    distortion:       overrides?.distortion,
+    distortion:       overrides?.distortion ?? meta?.distortionLine,
     intensity:        finalIntensity,
     confidence:       finalConfidence,
     timeOrientation:  overrides?.timeOrientation ?? classification.timeOrientation,
