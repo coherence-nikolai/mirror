@@ -36,6 +36,8 @@
   justify-content: center;
   margin: var(--sp-12) 0 var(--sp-8);
   transition: transform 1100ms ease, filter 1100ms ease, opacity 1100ms ease;
+  filter: brightness(1.04);
+  opacity: 1;
 }
 
 .orbArea {
@@ -47,55 +49,55 @@
 
 .phaseHalo {
   position: absolute;
-  inset: 7% 17%;
+  inset: 6% 16%;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(200,185,138,0.12) 0%, rgba(200,185,138,0.05) 36%, rgba(200,185,138,0.00) 74%);
-  opacity: 0.30;
-  transform: scale(0.95);
+  background: radial-gradient(circle, rgba(200,185,138,0.14) 0%, rgba(200,185,138,0.06) 34%, rgba(200,185,138,0.00) 74%);
+  opacity: 0.36;
+  transform: scale(0.97);
   transition: transform 1100ms ease, opacity 1100ms ease, filter 1100ms ease;
   pointer-events: none;
 }
 
 .running.phaseInhale {
-  transform: scale(1.03);
-  filter: brightness(1.06);
+  transform: scale(1.035);
+  filter: brightness(1.08);
 }
 
 .running.phaseInhale .phaseHalo {
-  opacity: 0.48;
-  transform: scale(1.06);
-  filter: brightness(1.06);
+  opacity: 0.52;
+  transform: scale(1.08);
+  filter: brightness(1.08);
 }
 
 .running.phaseExhale {
   transform: scale(0.975);
-  filter: brightness(0.95);
+  filter: brightness(0.96);
 }
 
 .running.phaseExhale .phaseHalo {
-  opacity: 0.18;
-  transform: scale(0.88);
-  filter: brightness(0.94);
+  opacity: 0.20;
+  transform: scale(0.90);
+  filter: brightness(0.95);
 }
 
 .mode_settle.running.phaseInhale {
-  transform: scale(1.02);
-  filter: brightness(1.04);
+  transform: scale(1.024);
+  filter: brightness(1.06);
 }
 
 .mode_settle.running.phaseExhale {
-  transform: scale(0.985);
-  filter: brightness(0.97);
+  transform: scale(0.986);
+  filter: brightness(0.98);
 }
 
 .mode_settle.running.phaseExhale .phaseHalo {
-  opacity: 0.22;
-  transform: scale(0.91);
+  opacity: 0.24;
+  transform: scale(0.92);
 }
 
 .mode_steady.running.phaseInhale {
-  transform: scale(1.03);
-  filter: brightness(1.06);
+  transform: scale(1.035);
+  filter: brightness(1.08);
 }
 
 .mode_steady.running.phaseExhale {
@@ -109,19 +111,19 @@
 }
 
 .mode_downshift.running.phaseInhale {
-  transform: scale(1.025);
-  filter: brightness(1.03);
+  transform: scale(1.028);
+  filter: brightness(1.04);
 }
 
 .mode_downshift.running.phaseExhale {
-  transform: scale(0.965);
+  transform: scale(0.962);
   filter: brightness(0.92);
 }
 
 .mode_downshift.running.phaseExhale .phaseHalo {
   opacity: 0.14;
-  transform: scale(0.84);
-  filter: brightness(0.9);
+  transform: scale(0.83);
+  filter: brightness(0.90);
 }
 
 .centerBlock {
