@@ -30,44 +30,6 @@ function extractNamedEmotion(rawInput: string): string | null {
   return null
 }
 
-function classifyLowConfidenceInput(rawInput: string): 'unclear' | 'unsettled' | 'strain' | 'generic' {
-  const lower = rawInput.toLowerCase().trim()
-
-  if (
-    /\bi don['’]?t know\b/.test(lower)
-    || /\bdon['’]?t know\b/.test(lower)
-    || /\bnot sure\b/.test(lower)
-    || /\bunclear\b/.test(lower)
-    || /\bcan['’]?t tell\b/.test(lower)
-  ) {
-    return 'unclear'
-  }
-
-  if (
-    /\b(feels? off|feel off|off)\b/.test(lower)
-    || /\bweird\b/.test(lower)
-    || /\bstrange\b/.test(lower)
-    || /\bodd\b/.test(lower)
-    || /\bnot right\b/.test(lower)
-  ) {
-    return 'unsettled'
-  }
-
-  if (
-    /\bi['’]?m not okay\b/.test(lower)
-    || /\bim not okay\b/.test(lower)
-    || /\bnot ok\b/.test(lower)
-    || /\bnot okay\b/.test(lower)
-    || /\bcan['’]?t cope\b/.test(lower)
-    || /\btoo much\b/.test(lower)
-    || /\bstruggling\b/.test(lower)
-  ) {
-    return 'strain'
-  }
-
-  return 'generic'
-}
-
 function normalizeSentence(text: string): string {
   const trimmed = text.trim().replace(/\s+/g, ' ')
   if (!trimmed) return ''
@@ -81,7 +43,47 @@ function shortenLine(text: string, maxWords = 12): string {
   return normalizeSentence(words.slice(0, maxWords).join(' '))
 }
 
+function categoryLines(pattern: MirrorState['primaryPattern']) {
+  switch (pattern) {
+    case 'unsettled':
+      return {
+        seenLine: 'This feels off.',
+        shiftLine: 'Stay close to what is here before naming it.',
+        paceLine: 'One slower breath.',
+      }
+    case 'unclear':
+      return {
+        seenLine: 'It is not clear yet.',
+        shiftLine: 'You do not need to force a name yet.',
+        paceLine: 'Stay with one breath.',
+      }
+    case 'mixed':
+      return {
+        seenLine: 'More than one thing is here.',
+        shiftLine: 'Let both truths have some room.',
+        paceLine: 'Name the first feeling, then the second.',
+      }
+    case 'tender':
+      return {
+        seenLine: 'Something tender is here.',
+        shiftLine: 'Gentleness is a valid response.',
+        paceLine: 'One softer breath.',
+      }
+    case 'threshold':
+      return {
+        seenLine: 'Something is shifting.',
+        shiftLine: 'You do not need to force the crossing.',
+        paceLine: 'One steady breath.',
+      }
+    default:
+      return null
+  }
+}
+
 function pickSeenLine(state: MirrorState): string {
+  const category = categoryLines(state.primaryPattern)
+  if (category) return category.seenLine
+
   const candidate = (state.seen ?? '').trim()
   if (candidate && !VAGUE_VALUES.has(candidate.toLowerCase())) {
     return shortenLine(candidate, 8)
@@ -94,6 +96,9 @@ function pickSeenLine(state: MirrorState): string {
 }
 
 function pickShiftLine(state: MirrorState): string {
+  const category = categoryLines(state.primaryPattern)
+  if (category) return category.shiftLine
+
   const candidate = (state.shiftPhrase ?? '').trim()
   if (candidate) return shortenLine(candidate, 14)
   return 'Stay with one steady breath.'
@@ -107,6 +112,9 @@ function firstSentence(text: string): string {
 }
 
 function pickPaceLine(state: MirrorState): string {
+  const category = categoryLines(state.primaryPattern)
+  if (category) return category.paceLine
+
   const candidate = firstSentence(state.microPractice ?? '')
   if (candidate) return shortenLine(candidate, 12)
   return 'Slow the exhale.'
@@ -128,17 +136,20 @@ export function formatSpokenResponse(
       shiftLine = 'Stay with one steady breath.'
       paceLine = 'One breath.'
     } else {
-      const bucket = classifyLowConfidenceInput(state.rawInput ?? '')
-
-      if (bucket === 'unclear') {
+      const category = categoryLines(state.primaryPattern)
+      if (category) {
+        seenLine = category.seenLine
+        shiftLine = category.shiftLine
+        paceLine = category.paceLine
+      } else if (/\bi don['’]?t know\b|\bnot sure\b|\bunclear\b|\bcan['’]?t tell\b/.test((state.rawInput ?? '').toLowerCase())) {
         seenLine = 'It is not clear yet.'
         shiftLine = 'You do not need to force a name yet.'
         paceLine = 'Stay with one breath.'
-      } else if (bucket === 'unsettled') {
+      } else if (/\b(feels? off|weird|strange|odd|not right)\b/.test((state.rawInput ?? '').toLowerCase())) {
         seenLine = 'This feels off.'
         shiftLine = 'Stay close to what is here before naming it.'
         paceLine = 'One slower breath.'
-      } else if (bucket === 'strain') {
+      } else if (/\bnot okay\b|\btoo much\b|\bcan['’]?t cope\b|\bstruggling\b/.test((state.rawInput ?? '').toLowerCase())) {
         seenLine = 'This feels like too much.'
         shiftLine = 'Make the next moment smaller.'
         paceLine = 'Slow the exhale.'
